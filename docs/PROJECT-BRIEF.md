@@ -6,7 +6,7 @@ Updated as the project moves forward — reflects the actual state of the code i
 
 - [x] **Phase 0 — Setup**: Maven multi-module skeleton (parent POM + 6 modules: `eureka-server`, `api-gateway`, `product-service`, `order-service`, `inventory-service`, `payment-service`), each with an `Application` class and `application.yml` (dedicated port, Eureka client, PostgreSQL datasource, RabbitMQ). Build verified with `./mvnw clean install`; Eureka Server smoke-tested with a real boot (responds on `:8761`).
 - [x] **Phase 0 — Setup**: `docker-compose.yml` with 4 separate PostgreSQL instances (one per service, mapped to host ports 5433-5436) + RabbitMQ (with management UI on `:15672`), all with healthchecks. YAML validated with `docker compose config`; **not yet runtime-tested** — the sandbox this was written in can't start the Docker daemon, so run `docker-compose up -d` locally to confirm before relying on it.
-- [ ] **Phase 1 — Product Service**: CRUD, validation, Testcontainers-based tests
+- [x] **Phase 1 — Product Service**: CRUD (Entity, DTOs via records, Repository, Service, Controller with `/api/products`), Bean Validation, centralized exception handling (404/400). 3 unit tests passing (`ProductServiceTest`). A Testcontainers integration test (`ProductRepositoryIT`) is written but excluded from the default `test` run (surefire only picks up `*Test` classes) — run it explicitly with `-Dtest=ProductRepositoryIT` once Docker is available locally.
 - [ ] **Phase 2 — Inventory Service**: stock model, reserve/release, event consumer
 - [ ] **Phase 3 — Payment Service**: payment authorization simulation
 - [ ] **Phase 4 — Order Service + Saga orchestration**: order states, compensation logic

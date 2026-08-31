@@ -9,7 +9,7 @@ Goal: use AI as an accelerator without missing the chance to shake off the rust 
 | Phase | Topic | AI delegation | Status |
 |---|---|---|---|
 | 1 | Setup & Infrastructure | 90% | In progress — Maven multi-module skeleton done (build verified, Eureka boot smoke-tested); `docker-compose.yml` written (4 Postgres instances + RabbitMQ, healthchecks) but not yet runtime-tested locally |
-| 2 | Base Services (CRUD) | 50% | Not started |
+| 2 | Base Services (CRUD) | 50% | In progress — Product Service CRUD done by AI (Entity, DTOs, Repository, Service, Controller, exception handling, unit tests). No domain-specific business logic to reserve for the user here; Inventory Service reserve/release logic still to come |
 | 3 | Saga Pattern | 30% | Not started |
 | 4 | Deploy & Dockerfiles | 80% | Not started |
 
