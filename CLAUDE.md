@@ -1,23 +1,23 @@
 # CLAUDE.md
 
-Questo file viene letto automaticamente da Claude Code a ogni sessione di lavoro sul progetto. Contiene il contesto che altrimenti andrebbe rispiegato ogni volta.
+This file is automatically read by Claude Code at the start of every work session on the project. It contains context that would otherwise need to be re-explained each time.
 
 ---
 
-## Panoramica progetto
+## Project overview
 
-E-Commerce Microservices Engine — sistema e-commerce diviso in microservizi (Product, Order, Inventory, Payment Service) con API Gateway e service discovery, per dimostrare gestione della consistenza distribuita (pattern Saga) e comunicazione asincrona a eventi.
+E-Commerce Microservices Engine — an e-commerce system split into microservices (Product, Order, Inventory, Payment Service) with an API Gateway and service discovery, built to demonstrate distributed consistency management (Saga pattern) and asynchronous event-driven communication.
 
-## Stack tecnologico
+## Tech stack
 
 - Java 21, Spring Boot 3.x
 - Spring Cloud (Eureka, Spring Cloud Gateway)
-- PostgreSQL (un database per servizio)
-- RabbitMQ / Apache Kafka per messaggistica asincrona
+- PostgreSQL (one database per service)
+- RabbitMQ / Apache Kafka for asynchronous messaging
 - Docker + Docker Compose
-- JUnit 5 + Testcontainers per i test
+- JUnit 5 + Testcontainers for testing
 
-## Struttura del repo
+## Repo structure
 
 ```
 /product-service
@@ -29,40 +29,40 @@ E-Commerce Microservices Engine — sistema e-commerce diviso in microservizi (P
 docker-compose.yml
 ```
 
-## Comandi utili
+## Useful commands
 
 ```bash
-# Avvio completo in locale
+# Full local startup
 docker-compose up --build
 
-# Build di un singolo servizio
+# Build a single service
 ./mvnw clean install -pl product-service
 
-# Test di un singolo servizio
+# Test a single service
 ./mvnw test -pl order-service
 
-# Logs di un servizio specifico
+# Logs for a specific service
 docker-compose logs -f order-service
 ```
 
-## Convenzioni
+## Conventions
 
-- Naming eventi: `<Entità><Azione>` al passato, es. `OrderCreated`, `StockReserved`, `PaymentFailed`
-- Ogni servizio ha il proprio database — mai accesso diretto al DB di un altro servizio, solo via API o eventi
-- DTO separati dalle Entity JPA, mai esporre le Entity direttamente nelle API
-- Package base: `com.<tuonome>.<nomeservizio>`
+- Event naming: `<Entity><Action>` in past tense, e.g. `OrderCreated`, `StockReserved`, `PaymentFailed`
+- Each service owns its own database — no direct access to another service's DB, only via API or events
+- DTOs are separate from JPA Entities, never expose Entities directly in the API
+- Base package: `com.<yourname>.<servicename>`
 
-## Regole per l'IA
+## Rules for the AI
 
-- Non modificare la logica di orchestrazione della Saga (Order Service) senza prima spiegare il ragionamento — è la parte che devo capire a fondo per i colloqui
-- Task piccoli e specifici: preferire "implementa il consumer per l'evento StockReserved" a richieste ampie tipo "fai l'Inventory Service"
-- Quando generi codice per un nuovo servizio, segui la stessa struttura (Entity, Repository, Service, Controller, DTO) già usata negli altri servizi
-- Se un test esiste già per una funzionalità, trattalo come specifica da rispettare, non da riscrivere
-- In caso di dubbio su una decisione architetturale già presa, controllare prima DECISIONS.md invece di riproporre alternative già scartate
+- Do not modify the Saga orchestration logic (Order Service) without first explaining the reasoning — this is the part I need to fully understand for interviews
+- Small, specific tasks: prefer "implement the consumer for the StockReserved event" over broad requests like "build the Inventory Service"
+- When generating code for a new service, follow the same structure (Entity, Repository, Service, Controller, DTO) already used in the other services
+- If a test already exists for a feature, treat it as the spec to satisfy, not something to rewrite
+- When in doubt about an architectural decision that's already been made, check DECISIONS.md first instead of re-proposing alternatives that were already discarded
 
-## File di riferimento da consultare
+## Reference files to consult
 
-- `ARCHITECTURE.md` — decisioni di design e diagrammi di flusso
-- `DECISIONS.md` — perché sono state fatte certe scelte tecniche
-- `API.md` — contratti REST tra servizi
-- `LEARNINGS.md` — problemi già risolti in passato
+- `ARCHITECTURE.md` — design decisions and flow diagrams
+- `DECISIONS.md` — why certain technical choices were made
+- `API.md` — REST contracts between services
+- `LEARNINGS.md` — problems already solved in the past
