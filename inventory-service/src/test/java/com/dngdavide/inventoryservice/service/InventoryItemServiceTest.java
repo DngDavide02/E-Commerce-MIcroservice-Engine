@@ -4,6 +4,7 @@ import com.dngdavide.inventoryservice.dto.InventoryItemRequest;
 import com.dngdavide.inventoryservice.dto.InventoryItemResponse;
 import com.dngdavide.inventoryservice.entity.InventoryItem;
 import com.dngdavide.inventoryservice.exception.DuplicateInventoryItemException;
+import com.dngdavide.inventoryservice.exception.InsufficientStockException;
 import com.dngdavide.inventoryservice.exception.InventoryItemNotFoundException;
 import com.dngdavide.inventoryservice.repository.InventoryItemRepository;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,4 +60,26 @@ class InventoryItemServiceTest {
         assertThatThrownBy(() -> inventoryItemService.findByProductId(99L))
                 .isInstanceOf(InventoryItemNotFoundException.class);
     }
+
+    @Test
+void reserveDecreasesQuantityWhenStockIsSufficient() {
+    InventoryItem existingItem = new InventoryItem(1L, 50);
+
+    when(inventoryItemRepository.findById(1L)).thenReturn(Optional.of(existingItem));
+
+    when(inventoryItemRepository.save(any(InventoryItem.class))).thenReturn(existingItem);
+    
+    InventoryItemResponse response = inventoryItemService.reserve(1L, 20);
+    
+    assertThat(response.quantity()).isEqualTo(30);
+}
+
+@Test
+void reserveThrowsWhenStockIsInsufficient() {
+    InventoryItem existingItem = new InventoryItem(2L, 5);
+    
+    when(inventoryItemRepository.findByProductId(2L)).thenReturn(Optional.of(existingItem));
+
+    assertThatThrownBy(() -> inventoryItemService.reserve(2L,10)).isInstanceOf(InsufficientStockException.class);
+}
 }
