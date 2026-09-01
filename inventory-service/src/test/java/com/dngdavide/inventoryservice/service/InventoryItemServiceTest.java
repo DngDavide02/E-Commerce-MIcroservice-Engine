@@ -65,7 +65,7 @@ class InventoryItemServiceTest {
 void reserveDecreasesQuantityWhenStockIsSufficient() {
     InventoryItem existingItem = new InventoryItem(1L, 50);
 
-    when(inventoryItemRepository.findById(1L)).thenReturn(Optional.of(existingItem));
+    when(inventoryItemRepository.findByProductId(1L)).thenReturn(Optional.of(existingItem));
 
     when(inventoryItemRepository.save(any(InventoryItem.class))).thenReturn(existingItem);
     
