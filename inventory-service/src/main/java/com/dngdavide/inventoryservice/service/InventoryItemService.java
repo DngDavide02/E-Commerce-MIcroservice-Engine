@@ -59,6 +59,13 @@ public class InventoryItemService {
         }
     }
 
+    public InventoryItemResponse release(Long productId, int quantity){
+        InventoryItem item = getByProductIdOrThrow(productId);
+
+        item.setQuantity(item.getQuantity() + quantity);
+        return toResponse(inventoryItemRepository.save(item));
+    }
+
     private InventoryItem getByProductIdOrThrow(Long productId) {
         return inventoryItemRepository.findByProductId(productId)
                 .orElseThrow(() -> new InventoryItemNotFoundException(productId));

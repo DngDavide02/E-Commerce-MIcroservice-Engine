@@ -82,4 +82,17 @@ void reserveThrowsWhenStockIsInsufficient() {
 
     assertThatThrownBy(() -> inventoryItemService.reserve(2L,10)).isInstanceOf(InsufficientStockException.class);
 }
+
+@Test
+void releaseIncreasesQuantity() {
+    InventoryItem existingItem = new InventoryItem(3L, 30);
+
+    when(inventoryItemRepository.findByProductId(3L)).thenReturn(Optional.of(existingItem));
+
+    when(inventoryItemRepository.save(any(InventoryItem.class))).thenReturn(existingItem);
+    
+    InventoryItemResponse response = inventoryItemService.release(3L, 10);
+    
+    assertThat(response.quantity()).isEqualTo(40);
+}
 }
