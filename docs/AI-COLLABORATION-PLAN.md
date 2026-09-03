@@ -9,7 +9,7 @@ Goal: use AI as an accelerator without missing the chance to shake off the rust 
 | Phase | Topic | AI delegation | Status |
 |---|---|---|---|
 | 1 | Setup & Infrastructure | 90% | In progress — Maven multi-module skeleton done (build verified, Eureka boot smoke-tested); `docker-compose.yml` written (4 Postgres instances + RabbitMQ, healthchecks) but not yet runtime-tested locally |
-| 2 | Base Services (CRUD) | 50% | In progress — Product Service CRUD done by AI. Inventory Service: AI did basic CRUD; user hand-wrote `reserve()` (with AI as debugging supervisor — caught a Java syntax slip and a Mockito mock mismatch along the way), 5 tests passing. `release()` and the event consumer are next, still the user's part |
+| 2 | Base Services (CRUD) | 50% | Done for the CRUD half — Product, Inventory and Payment Service basic CRUD all built by AI. Inventory: user hand-wrote `reserve()`/`release()` (AI as debugging supervisor), 6 tests passing. Payment: AI stopped before the authorize/reject decision logic, same boundary — still the user's part, plus the RabbitMQ event wiring for all three |
 | 3 | Saga Pattern | 30% | Not started |
 | 4 | Deploy & Dockerfiles | 80% | Not started |
 
